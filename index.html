@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Core Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      body {
+        background: #0b0d10;
+        color: #f3f4f6;
+        font-family: 'Inter', sans-serif;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      .neon-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          linear-gradient(125deg, rgba(0,0,255,0.05) 0%, rgba(0,0,0,0) 50%),
+          linear-gradient(235deg, rgba(128,0,255,0.05) 0%, rgba(0,0,0,0) 50%);
+        overflow: hidden;
+      }
+
+      .neon-grid {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background-image: 
+          linear-gradient(rgba(42, 96, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(42, 96, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        transform: perspective(500px) rotateX(60deg);
+        animation: grid-move 20s linear infinite;
+      }
+
+      .neon-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.15;
+      }
+
+      .glow-1 {
+        top: 20%;
+        left: 10%;
+        background: #2563eb;
+        animation: float-slow 8s ease-in-out infinite;
+      }
+
+      .glow-2 {
+        bottom: 10%;
+        right: 20%;
+        background: #7c3aed;
+        animation: float-slow 12s ease-in-out infinite;
+      }
+
+      @keyframes grid-move {
+        0% {
+          transform: perspective(500px) rotateX(60deg) translateY(0);
+        }
+        100% {
+          transform: perspective(500px) rotateX(60deg) translateY(50px);
+        }
+      }
+
+      @keyframes float-slow {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-20px) scale(1.1);
+        }
+      }
+
+      .gradient-text {
+        background: linear-gradient(45deg, #3b82f6, #10b981);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .metallic-heading {
+        font-weight: 300;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 0.7) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .logo-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-image {
+        width: auto;
+        height: 120px;
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        transition: transform 0.3s ease;
+      }
+
+      .logo-image:hover {
+        transform: scale(1.05);
+      }
+
+      .text-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+      }
+
+      .typing-container {
+        min-height: 40px;
+      }
+
+      .button-container {
+        margin-top: 2rem;
+      }
+
+      .standard-text {
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      .problem-statement {
+        font-size: 2.5rem;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+      }
+
+      .problem-description {
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      .typing-text {
+        position: relative;
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: left;
+        line-height: 1.4;
+        font-weight: 300;
+      }
+
+      .typing-text::after {
+        content: '|';
+        margin-left: 2px;
+        animation: blink 0.8s infinite;
+        position: static;
+      }
+
+      .neon-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 12px 24px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 300;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        box-shadow: 
+          0 0 10px rgba(37, 99, 235, 0.2),
+          0 0 20px rgba(37, 99, 235, 0.1),
+          0 0 30px rgba(37, 99, 235, 0.05);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .neon-button:hover {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: rgba(37, 99, 235, 0.5);
+        box-shadow: 
+          0 0 15px rgba(37, 99, 235, 0.3),
+          0 0 30px rgba(37, 99, 235, 0.2),
+          0 0 45px rgba(37, 99, 235, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .neon-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .neon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 0 20px rgba(37, 99, 235, 0.2),
+          0 0 40px rgba(37, 99, 235, 0.1);
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 4rem;
+      }
+
+      .comparison-table th {
+        padding: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .comparison-table td {
+        padding: 1.5rem;
+        font-size: 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .comparison-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .comparison-table td:first-child {
+        color: #94a3b8;
+        text-align: left;
+        font-weight: 500;
+      }
+
+      .comparison-table td:nth-child(2) {
+        color: #94a3b8;
+        text-align: center;
+      }
+
+      .comparison-table td:last-child {
+        color: #3b82f6;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .comparison-table th:nth-child(2) {
+        color: #94a3b8;
+      }
+
+      .comparison-table th:last-child {
+        background: linear-gradient(45deg, #3b82f6, #10b981);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .overview-section {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .overview-title {
+        font-size: 3.5rem;
+        margin-bottom: 4rem;
+        opacity: 0.8;
+      }
+
+      .overview-content {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+      }
+
+      .solution-title {
+        font-size: 2.5rem;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 0.7) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1.5rem;
+      }
+
+      .solution-description {
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      .divider {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        margin: 3rem auto;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 0.75rem;
+        background: rgba(11, 13, 16, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+      }
+
+      .nav-container {
+        max-width: 5xl;
+        margin: 0 auto;
+        display: flex;
+        justify-content: flex-end;
+        gap: 2rem;
+        padding: 0.25rem 2rem;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 0.25rem 0;
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      footer {
+        background: #0b0d10;
+        padding: 6rem 0 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-content {
+        max-width: 5xl;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4rem;
+        margin-bottom: 4rem;
+      }
+
+      .footer-column h4 {
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .footer-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-column ul li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-column ul li a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        font-weight: 300;
+      }
+
+      .footer-column ul li a:hover {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .footer-bottom {
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-bottom p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.875rem;
+        font-weight: 300;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-links a {
+        color: rgba(255, 255, 255, 0.6);
+        transition: all 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body class="text-white">
+    <!-- Navigation -->
+    <nav class="nav-menu">
+      <div class="nav-container">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#risks" class="nav-link">Risks</a>
+        <a href="#comparison" class="nav-link">Comparison</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </nav>
+
+    <div class="neon-background">
+      <div class="neon-grid"></div>
+      <div class="neon-glow glow-1"></div>
+      <div class="neon-glow glow-2"></div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        AOS.init();
+      });
+    </script>
+
+    <!-- HERO -->
+    <section class="min-h-[70vh] flex flex-col justify-center px-6 relative overflow-hidden">
+      <div class="neon-background">
+        <div class="neon-grid"></div>
+        <div class="neon-glow glow-1"></div>
+        <div class="neon-glow glow-2"></div>
+      </div>
+      
+      <div class="max-w-5xl mx-auto w-full" data-aos="fade-up" data-aos-duration="1000">
+        <div class="content-wrapper">
+          <div class="logo-container">
+            <img src="LOGO.png" alt="CORE PROTOCOL" class="logo-image">
+          </div>
+          
+          <div class="text-content">
+            <div class="typing-container mb-8">
+              <p id="typing-text" class="typing-text max-w-3xl"></p>
+            </div>
+            <div class="inline-block">
+              <a href="#learn-more" class="neon-button">
+                Learn More
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="py-32 px-6 bg-[#111317] overview-section" data-aos="fade-up">
+      <div class="max-w-5xl mx-auto">
+        <div class="overview-content">
+          <!-- Problem Statement -->
+          <div>
+            <p class="problem-statement">
+              We're taking on more risk than we need to earn less than we should.
+            </p>
+            <p class="problem-description">
+              Traditional finance products hide fees, suffer from illiquidity, and lack transparency.
+            </p>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Solution -->
+          <div>
+            <h3 class="solution-title">What Is Core?</h3>
+            <p class="solution-description">
+              Core Protocol intelligently allocates your tokens across audited DeFi strategies, giving you full control and daily liquidity.
+            </p>
+          </div>
+        </div>
+
+        <!-- COMPARISON TABLE -->
+        <div class="mt-24" data-aos="fade-up">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th class="text-left"></th>
+                <th>Traditional Product</th>
+                <th>Core Protocol</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Liquidity</td>
+                <td>Limited</td>
+                <td>Daily</td>
+              </tr>
+              <tr>
+                <td>Transparency</td>
+                <td>Low</td>
+                <td>Total</td>
+              </tr>
+              <tr>
+                <td>Control</td>
+                <td>Third Parties</td>
+                <td>You</td>
+              </tr>
+              <tr>
+                <td>Returns</td>
+                <td>~6% with High Risk</td>
+                <td>8-10% Conservative</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="learn-more" class="py-32 px-6 bg-[#111317]">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-4xl font-bold mb-16 text-center metallic-heading">Risks</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="neon-card">
+            <h3 class="text-2xl font-semibold mb-4">Audited Protocols</h3>
+            <p class="text-gray-300">We exclusively use protocols that have undergone rigorous security audits.</p>
+          </div>
+          <div class="neon-card">
+            <h3 class="text-2xl font-semibold mb-4">Multisig Infrastructure</h3>
+            <p class="text-gray-300">Enhanced security through multi-signature technology.</p>
+          </div>
+          <div class="neon-card">
+            <h3 class="text-2xl font-semibold mb-4">Direct Support</h3>
+            <p class="text-gray-300">Technical support directly from our specialized team.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section id="contact" class="py-20 px-6 bg-[#0b0d10] text-center" data-aos="fade-up">
+      <h2 class="text-3xl font-bold mb-4 metallic-heading">Let's Talk?</h2>
+      <p class="standard-text mb-6">Welcome to Core. You, at the center.</p>
+      <a href="https://wa.me/seunumerodowhatsapp" target="_blank" class="neon-button">
+        JOIN US
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4>Protocol</h4>
+            <ul>
+              <li><a href="#overview">Overview</a></li>
+              <li><a href="#risks">Risk Management</a></li>
+              <li><a href="#comparison">Comparison</a></li>
+              <li><a href="#">Documentation</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Whitepaper</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Audits</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press Kit</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">Disclaimers</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 Core Protocol. All rights reserved.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Medium"><i class="fab fa-medium"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function typeText() {
+        const phrase = "Blockchain financial solutions for those who want\nto invest with simplicity without technical barriers.";
+        const typingElement = document.getElementById('typing-text');
+        let currentIndex = 0;
+        
+        function type() {
+          if (currentIndex < phrase.length) {
+            if (phrase[currentIndex] === '\n') {
+              typingElement.innerHTML = typingElement.innerHTML + '<br>';
+            } else {
+              typingElement.innerHTML = typingElement.innerHTML + phrase[currentIndex];
+            }
+            currentIndex++;
+            setTimeout(type, 80);
+          }
+        }
+        
+        type();
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        AOS.init();
+        typeText();
+      });
+    </script>
+  </body>
+</html>
