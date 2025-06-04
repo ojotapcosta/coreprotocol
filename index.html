@@ -1869,56 +1869,52 @@
     <div class="neon-glow glow-3"></div>
   </div>
 
+  <!-- Dependências primeiro -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.7/countUp.min.js"></script>
+
+  <!-- Script customizado: inicialização do AOS e do toggle -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      AOS.init();
-      typeText();
+    // Inicializa AOS
+    AOS.init();
 
-      // Função genérica para inicializar toggles
-      function initToggle(containerId, btn1Id, btn2Id, panel1Id, panel2Id, isTable = false) {
-        const btn1 = document.getElementById(btn1Id);
-        const btn2 = document.getElementById(btn2Id);
-        const panel1 = document.getElementById(panel1Id);
-        const panel2 = document.getElementById(panel2Id);
-        const toggleBg = document.querySelector(`${containerId} .toggle-background`);
-        const tablesContainer = isTable ? document.querySelector('.tables-container') : null;
+    // Função de toggle para a comparação
+    function initToggle(containerId, btn1Id, btn2Id, panel1Id, panel2Id, isTable = false) {
+      const btn1 = document.getElementById(btn1Id);
+      const btn2 = document.getElementById(btn2Id);
+      const panel1 = document.getElementById(panel1Id);
+      const panel2 = document.getElementById(panel2Id);
+      const toggleBg = document.querySelector(containerId + ' .toggle-background');
+      const tablesContainer = isTable ? document.querySelector('.tables-container') : null;
 
-        if (!btn1 || !btn2 || !panel1 || !panel2 || !toggleBg) return;
+      if (!btn1 || !btn2 || !panel1 || !panel2 || !toggleBg) return;
 
-        function updateToggleState(isSecondActive) {
-          toggleBg.style.transform = isSecondActive ? 'translateX(calc(100% + 8px))' : 'translateX(0)';
-          btn1.classList.toggle('active', !isSecondActive);
-          btn2.classList.toggle('active', isSecondActive);
+      function updateToggleState(isSecondActive) {
+        toggleBg.style.transform = isSecondActive ? 'translateX(calc(100% + 8px))' : 'translateX(0)';
+        btn1.classList.toggle('active', !isSecondActive);
+        btn2.classList.toggle('active', isSecondActive);
 
-          if (isTable && tablesContainer) {
-            tablesContainer.classList.toggle('mode2', isSecondActive);
-            panel1.classList.toggle('active', !isSecondActive);
-            panel2.classList.toggle('active', isSecondActive);
-          } else {
-            btn1.classList.toggle('text-gray-400', isSecondActive);
-            btn1.classList.toggle('text-white', !isSecondActive);
-            btn2.classList.toggle('text-gray-400', !isSecondActive);
-            btn2.classList.toggle('text-white', isSecondActive);
+        if (isTable && tablesContainer) {
+          tablesContainer.classList.toggle('mode2', isSecondActive);
+          panel1.classList.toggle('active', !isSecondActive);
+          panel2.classList.toggle('active', isSecondActive);
+        } else {
+          btn1.classList.toggle('text-gray-400', isSecondActive);
+          btn1.classList.toggle('text-white', !isSecondActive);
+          btn2.classList.toggle('text-gray-400', !isSecondActive);
+          btn2.classList.toggle('text-white', isSecondActive);
 
-            panel1.classList.toggle('active', !isSecondActive);
-            panel2.classList.toggle('active', isSecondActive);
-          }
+          panel1.classList.toggle('active', !isSecondActive);
+          panel2.classList.toggle('active', isSecondActive);
         }
-
-        btn1.addEventListener('click', () => updateToggleState(false));
-        btn2.addEventListener('click', () => updateToggleState(true));
       }
 
-      // Inicializa o toggle de problema/solução
-      initToggle(
-        '#problem-solution',
-        'tab-problem',
-        'tab-solution',
-        'panel-problem',
-        'panel-solution'
-      );
+      btn1.addEventListener('click', () => updateToggleState(false));
+      btn2.addEventListener('click', () => updateToggleState(true));
+    }
 
-      // Inicializa o toggle de comparação
+    // Inicializa o toggle de comparação
+    document.addEventListener('DOMContentLoaded', function () {
       initToggle(
         '#comparison-section',
         'btn-mode1',
@@ -1927,6 +1923,13 @@
         'table-mode2',
         true
       );
+      // Se quiser, inicialize outros toggles aqui também!
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      typeText();
 
       // Scroll functionality
       document.getElementById('scrollToProblem')?.addEventListener('click', function () {
@@ -2094,9 +2097,9 @@
   </section>
 
   <!-- COMPARISON -->
-  <section id="comparison-section" class="py-12 bg-white relative overflow-hidden">
-    <div class="pb-6 container mx-auto relative z-10" style="max-width: 90vw;">
-      <p class="solution-description text-center text-gray-800" style="max-width: 90vw;">
+  <section id="comparison-section" class="pt-12 pb-0 bg-white relative overflow-hidden">
+    <div class="pb-0 mb-0 container mx-auto relative z-10" style="max-width: 90vw;">
+      <p class="solution-description text-center text-gray-800 mb-6" style="max-width: 90vw;">
         Alocamos seus tokens de forma inteligente<br>
         em estratégias DeFi auditadas, oferecendo<br>
         <span class="highlight-word text-[1.1em]">controle total</span> e <span
@@ -2108,14 +2111,14 @@
     <div class="pb-8">
       <div class="text-center">
         <!-- Toggle buttons -->
-        <div class="inline-flex bg-white shadow-lg rounded-full mb-6 toggle-wrapper" role="tablist">
+        <div class="inline-flex bg-white shadow-lg rounded-full mt-6 mb-6 toggle-wrapper" role="tablist">
           <div class="toggle-background"></div>
           <button id="btn-mode1" class="toggle-btn active" role="tab">Comparar Produtos</button>
           <button id="btn-mode2" class="toggle-btn" role="tab">Comparar Retorno</button>
         </div>
 
         <!-- Tables Container -->
-        <div class="tables-wrapper">
+        <div class="tables-wrapper mt-4">
           <div class="tables-container gap-4">
             <!-- Mode 1: Traditional vs Core -->
             <div id="table-mode1" class="table-panel active">
